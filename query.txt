@@ -1,0 +1,28 @@
+use CANN
+
+-- Create the users table
+CREATE TABLE users (
+    userID INT IDENTITY(1,1) PRIMARY KEY,
+    username VARCHAR(50) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    phone VARCHAR(15) NOT NULL
+);
+
+-- Create the guest table
+CREATE TABLE guest (
+    guestID INT IDENTITY(1,1) PRIMARY KEY,
+    guest_name VARCHAR(100) NOT NULL,
+    guest_category VARCHAR(50) NOT NULL,
+    phone VARCHAR(15) NOT NULL,
+    userID INT,
+    FOREIGN KEY (userID) REFERENCES users(userID)
+);
+
+-- Create the guest seating
+CREATE TABLE seating_plan (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    user_id INT NOT NULL,
+    table_number NVARCHAR(50) NOT NULL,
+    guests NVARCHAR(MAX) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES Users(userID)
+);

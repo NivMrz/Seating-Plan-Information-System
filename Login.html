@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #D8BBAB;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            max-width: 400px;
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        input {
+            display: block;
+            width: calc(100% - 20px);
+            margin: 10px auto;
+            padding: 12px 14px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            direction: rtl;
+            text-align: right;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #ECE1DA;
+            outline: none;
+            box-shadow: 0 0 5px rgba(41, 128, 185, 0.5);
+        }
+
+        button {
+            background-color: #ECE1DA;
+            color: #000;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            padding: 12px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+            width: 50%;
+        }
+
+        button:hover {
+            background-color: #d6ccc4;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>התחברות</h1>
+        <form id="login-form">
+            <input type="text" id="username" placeholder="שם משתמש" required>
+            <input type="password" id="password" placeholder="סיסמא" required>
+            <button type="submit">התחבר</button>
+        </form>
+        <div class="footer">
+            <p>אין לך חשבון? <a href="register.html">הרשם כאן</a></p>
+        </div>
+    </div>
+    <script>
+        document.getElementById("login-form").addEventListener("submit", async (e) => {
+            e.preventDefault(); // Prevent default form submission
+            const username = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value.trim();
+
+            try {
+                // Make a POST request to the backend
+                const response = await fetch("http://127.0.0.1:5000/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        password: password,
+                    }),
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    // Successful login
+                    alert(result.message);
+                    // Send a message to the parent window to update the navbar
+                    window.parent.postMessage({ user: username }, "*");
+                    // Redirect to another page
+                    window.location.href = "guest.html";
+                } else {
+                    // Handle invalid login
+                    alert(result.error);
+                }
+            } catch (error) {
+                // Handle server or network error
+                alert("Error: Could not connect to the server");
+                console.error("Error:", error);
+            }
+        });
+    </script>
+</body>
+</html>

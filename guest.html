@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Guests</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #D8BBAB;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #333;
+        }
+
+        h2 {
+            margin-top: 20px;
+            font-size: 22px;
+            color: #555;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
+
+        th {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        td {
+            background-color: #fff;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .remove-btn {
+            background-color: #e74c3c;
+            padding: 6px 12px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .remove-btn:hover {
+            background-color: #c0392b;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 400px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: black;
+        }
+
+        /* Add button */
+        .add-button {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 24px;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .add-button:hover {
+            background-color: #45a049;
+        }
+
+        /* Adjustments for modal inputs */
+        .modal-content input {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            direction: rtl; /* Add this line to align content from right to left */
+        }
+
+        .modal-content button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .modal-content button:hover {
+            background-color: #45a049;
+        }
+
+        /* Button to create seating arrangement */
+        .create-seating-btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #ECE1DA;
+            color: black;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+        }
+
+        .create-seating-btn:hover {
+            background-color: #ECE1DA;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>ניהול אורחים</h1>
+    
+<table id="guests-table">
+    <thead>
+        <tr>
+            <th>פעולה</th>
+            <th>מספר טלפון</th>
+            <th>קטגוריה</th>
+            <th>שם האורח</th>
+        </tr>
+    </thead>
+    <tbody id="guests-list">
+        <!-- Dynamic content will go here -->
+    </tbody>
+</table>
+
+<script>
+    // Fetch and display the list of guests for the logged-in user
+    async function fetchGuests() {
+        try {
+            const response = await fetch("http://127.0.0.1:5000/get_guests");
+            const guests = await response.json();
+
+            const guestsList = document.getElementById("guests-list");
+            guestsList.innerHTML = "";
+
+            guests.forEach(guest => {
+                const row = document.createElement("tr");
+
+                row.innerHTML = `
+                    <td><button class="remove-btn" onclick="removeGuest(${guest.guestID})">מחק</button></td>
+                    <td>${guest.phone}</td>
+                    <td>${guest.guest_category}</td>
+                    <td>${guest.guest_name}</td>
+                `;
+                guestsList.appendChild(row);
+            });
+        } catch (error) {
+            console.error("Error fetching guests:", error);
+        }
+    }
+
+    // Call fetchGuests on page load
+    fetchGuests();
+</script>
+
+
+    <!-- Add guest button (opens modal) -->
+    <button class="add-button" id="add-guest-btn">+</button>
+
+<!-- Modal for adding a guest -->
+<div id="add-guest-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>הוסף אורח חדש</h2>
+        <input type="text" id="guest_name" placeholder="שם האורח" required>
+
+        <!-- Category field with a datalist -->
+        <input
+            list="category-list"
+            id="guest_category"
+            placeholder="קטגוריה"
+            required
+        >
+<datalist id="category-list">
+    <option value="קולגות"></option>
+    <option value="שכנים"></option>
+    <option value="משפחת הכלה"></option>
+    <option value="חברי הכלה"></option>
+    <option value="משפחת החתן"></option>
+    <option value="חברי החתן"></option>
+    <option value="חברים משותפים"></option>
+    <option value="צבא"></option>
+    <option value="אורחים מיוחדים"></option>
+    <option value="אחר"></option>          <!-- Other -->
+</datalist>
+
+        <input type="text" id="phone" placeholder="טלפון">
+        <button onclick="addGuest()">הוסף אורח</button>
+    </div>
+</div>
+
+
+
+
+    <!-- Button to create seating arrangement -->
+    <button class="create-seating-btn" id="create-seating-btn" onclick="goToSeatingPage()">צור סידור הושבה</button>
+</div>
+
+<script>
+    // Fetch and display the list of guests for the logged-in user
+    async function fetchGuests() {
+        try {
+            const response = await fetch("http://127.0.0.1:5000/get_guests");
+            const guests = await response.json();
+
+            const guestsList = document.getElementById("guests-list");
+            guestsList.innerHTML = "";
+
+            guests.forEach(guest => {
+                const row = document.createElement("tr");
+
+                row.innerHTML = `
+                    <td><button class="remove-btn" onclick="removeGuest(${guest.guestID})">מחיקה</button></td>
+                    <td>${guest.phone}</td>
+                    <td>${guest.guest_category}</td>
+                    <td>${guest.guest_name}</td>
+                `;
+                guestsList.appendChild(row);
+            });
+
+        } catch (error) {
+            console.error("Error fetching guests:", error);
+        }
+    }
+
+    // Add a new guest
+    async function addGuest() {
+        const guestName = document.getElementById("guest_name").value;
+        const guestCategory = document.getElementById("guest_category").value;
+        const phone = document.getElementById("phone").value;
+
+        if (!guestName || !guestCategory || !phone) {
+            alert("Please fill in all the fields.");
+            return;
+        }
+
+        const newGuest = {
+            guest_name: guestName,
+            guest_category: guestCategory,
+            phone: phone
+        };
+
+        try {
+            const response = await fetch("http://127.0.0.1:5000/add_guest", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(newGuest)
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                alert(result.message);
+                fetchGuests();  // Refresh the guest list
+                resetForm(); // Reset the form fields
+                closeModal(); // Close the modal
+            } else {
+                alert(result.error);
+            }
+
+        } catch (error) {
+            console.error("Error adding guest:", error);
+            alert("An error occurred while adding the guest.");
+        }
+    }
+
+    // Remove a guest
+    async function removeGuest(guestID) {
+        const data = { guestID: guestID };
+
+        try {
+            const response = await fetch("http://127.0.0.1:5000/remove_guest", {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            alert(result.message);
+            fetchGuests();  // Refresh the guest list
+
+        } catch (error) {
+            console.error("Error removing guest:", error);
+            alert("An error occurred while removing the guest.");
+        }
+    }
+
+    // Show modal
+    const modal = document.getElementById("add-guest-modal");
+    const addBtn = document.getElementById("add-guest-btn");
+    const closeModalBtn = document.getElementsByClassName("close")[0];
+
+    addBtn.onclick = () => modal.style.display = "block";
+    closeModalBtn.onclick = () => modal.style.display = "none";
+
+    // Reset form fields
+    function resetForm() {
+        document.getElementById("guest_name").value = "";
+        document.getElementById("guest_category").value = "";
+        document.getElementById("phone").value = "";
+    }
+
+    // Close modal
+    function closeModal() {
+        modal.style.display = "none";
+    }
+
+    // Go to seating arrangement page
+    function goToSeatingPage() {
+        window.location.href = "Process.html"; // Change to your page URL
+    }
+
+    // Fetch guests on page load
+    fetchGuests();
+</script>
+
+</body>
+</html>

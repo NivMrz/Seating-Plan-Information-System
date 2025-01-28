@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>תמונה כרקע</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background-color: #f0f0f0; /* צבע רקע זמני */
+            background-image: url('images/HOMEPAGE.png'); /* עדכן את הנתיב לתמונה */
+            background-size: cover; /* כיסוי מלא */
+            background-repeat: no-repeat; /* ללא חזרה */
+            background-position: center; /* ממורכז */
+            position: relative; /* מיקום יחסי לאלמנטים בתוך ה-body */
+        }
+
+        .button-container {
+            position: absolute; /* מיקום יחסי ל-body */
+            bottom: 90px; /* מרחק 20 פיקסלים מתחתית הדף */
+            left:70%; /* ממורכז אופקית */
+            transform: translateX(-50%); /* תיקון המיקום כדי להיות ממורכז */
+        }
+
+        button {
+            background-color: #ECE1DA;
+            color: rgb(0, 0, 0);
+            font-size: 25px;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            background-color: #d6ccc4;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <!-- כפתור בתחתית -->
+    <div class="button-container">
+        <button onclick="window.location.href='Login.html'">צור סידור הושבה עכשיו</button>
+    </div>
+</body>
+</html>

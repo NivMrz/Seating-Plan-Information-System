@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>צור קשר</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #D8BBAB;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            direction: rtl; /* יישור מימין לשמאל */
+        }
+
+        .container {
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            max-width: 400px;
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        input, textarea {
+            display: block;
+            width: calc(100% - 20px);
+            margin: 10px auto;
+            padding: 12px 14px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            direction: rtl; /* יישור מימין לשמאל */
+            text-align: right;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #ECE1DA;
+            outline: none;
+            box-shadow: 0 0 5px rgba(41, 128, 185, 0.5);
+        }
+
+        textarea {
+            height: 100px;
+            resize: none;
+        }
+
+        button {
+            background-color: #ECE1DA;
+            color: #000;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            padding: 12px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+            width: 50%;
+        }
+
+        button:hover {
+            background-color: #d6ccc4;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .contact-method {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 0.75cm;
+        }
+
+        .contact-method img {
+            width: 32px;  /* גודל תמונה יותר גדול */
+            height: 32px; /* גודל תמונה יותר גדול */
+            margin-right: 10px;  /* תמונה מצד שמאל של הכיתוב */
+        }
+
+        .contact-method span {
+            font-size: 18px;  /* גודל טקסט יותר גדול */
+            color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* שמירה על הפונט */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>צור קשר</h1>
+        <form id="contact-form">
+            <input type="text" id="contact-name" placeholder="שם מלא" required>
+            <input type="email" id="contact-email" placeholder="כתובת אימייל" required>
+            <textarea id="contact-message" placeholder="ההודעה שלך" required></textarea>
+            <button type="submit">שלח</button>
+        </form>
+    </div>
+    <div class="footer">
+        <div class="contact-method">
+            <span>972-5381648+</span>
+            <img src="images/whatsapp.png" alt="WhatsApp" class="icon">
+        
+        </div>
+        <div class="contact-method">
+            <span>CANN Planning</span>
+            <img src="images/facebook.png" alt="Facebook" class="icon">
+            
+        </div>
+        <div class="contact-method">
+            <span>CANN.Planning@</span>
+            <img src="images/instagram.png" alt="Instagram" class="icon">
+            
+        </div>
+    </div>
+    <script>
+        const form = document.getElementById('contact-form');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // מניעת טעינת הדף 
+
+            // כאן אפשר להוסיף לוגיקה לשליחת המידע לשרת 
+
+            alert('ההודעה נשלחה בהצלחה!');
+            form.reset();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>הוספת אורחים</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input, button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script>
+        async function addGuest(event) {
+            event.preventDefault();
+            const guestName = document.getElementById("guest-name").value;
+            const guestCategory = document.getElementById("guest-category").value;
+            const guestPhone = document.getElementById("guest-phone").value;
+
+            const guest = { name: guestName, category: guestCategory, phone: guestPhone };
+            console.log("אורח נוסף:", guest);
+            alert(`האורח ${guestName} נוסף בהצלחה.`);
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>ניהול אורחים</h1>
+        <form id="guest-form" onsubmit="addGuest(event)">
+            <h2>הוסף אורחים</h2>
+            <input type="text" id="guest-name" placeholder="שם האורח" required>
+            <input type="text" id="guest-category" placeholder="קטגוריה" required>
+            <input type="tel" id="guest-phone" placeholder="טלפון" required>
+            <button type="submit">הוסף אורח</button>
+        </form>
+    </div>
+</body>
+</html>
